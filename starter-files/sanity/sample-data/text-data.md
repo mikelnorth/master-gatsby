@@ -1,4 +1,4 @@
-chimi hendirx
+Chimi Hendirx
 * Chimichurri
 * Squash
 * Mushrooms
@@ -49,7 +49,7 @@ The Pear Necessities
 * Honey
 
 Pepperphony
-* Vegan Pepperoi
+* Vegan Pepperoni
 * Vegan Cheese
 * Peppers
 * Basil
@@ -69,9 +69,9 @@ Cluck Norris
 ## people
 
 
-Slick is the proprietor, he inherited the business from his late grandfather. Refers to himself as the Pablo Escobar of pizza. He grows his own tomatoes and won’t let anyone ese near them...a little odd but we like him.
+Slick is the proprietor, he inherited the business from his late grandfather. Refers to himself as the Pablo Escobar of pizza. He grows his own tomatoes and won’t let anyone else near them...a little odd but we like him.
 
-Roscoe is the leftover manager. Loves Puperoni. Currently on a diet.
+Roscoe is the leftover manager. Loves Peperoni. Currently on a diet.
 
 After spending a summer in the New Mexico desert, August became passionate about circular foods. First it was waffles, now it is pizza.
 
