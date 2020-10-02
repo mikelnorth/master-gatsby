@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
-console.log('token:', process.env);
+
 export default {
   siteMetadata: {
     title: 'Slicks Slices',
