@@ -1,5 +1,5 @@
+import { graphql, Link, useStaticQuery } from 'gatsby';
 import React from 'react';
-import { useStaticQuery, graphql, Link } from 'gatsby';
 import styled from 'styled-components';
 
 const ToppingsStyles = styled.div`
@@ -15,72 +15,57 @@ const ToppingsStyles = styled.div`
     padding: 5px;
     background: var(--grey);
     border-radius: 2px;
-    text-decoration: none;
-    font-size: clamp(1.5rem, 1.4vw, 2.5rem);
     .count {
       background: white;
       padding: 2px 5px;
     }
-    &[aria-current='page'] {
+    .active {
       background: var(--yellow);
     }
   }
 `;
 
-function countPizzasInToppings(pizzas) {
-  // Return the pizzas with counts
+function pizzasByToppingCount(pizzas) {
   const counts = pizzas
     .map((pizza) => pizza.toppings)
     .flat()
-    .reduce((acc, topping) => {
-      // check if this is an existing topping
-      const existingTopping = acc[topping.id];
+    .reduce((acc, { id, name }) => {
+      const existingTopping = acc[id];
       if (existingTopping) {
-        //  if it is, increment by 1
         existingTopping.count += 1;
       } else {
-        // otherwise create a new entry in our acc and set it to one
-        acc[topping.id] = {
-          id: topping.id,
-          name: topping.name,
+        acc[id] = {
           count: 1,
+          id,
+          name,
         };
       }
       return acc;
     }, {});
-  // sort them based on their count
-  const sortedToppings = Object.values(counts).sort(
-    (a, b) => b.count - a.count
-  );
-  return sortedToppings;
+
+  // sort based on counts
+  return Object.values(counts).sort((a, b) => b.count - a.count);
 }
 
 export default function ToppingsFilter({ activeTopping }) {
-  // Get a list of all the toppings
-  // Get a list of all the Pizzas with their toppings
-  const { toppings, pizzas } = useStaticQuery(graphql`
-    query {
-      toppings: allSanityTopping {
-        nodes {
-          name
-          id
-          vegetarian
-        }
-      }
+  const { pizzas } = useStaticQuery(graphql`
+    query ToppingsQuery {
       pizzas: allSanityPizza {
         nodes {
+          price
+          name
+          id
           toppings {
             name
+            vegetarian
             id
           }
         }
       }
     }
   `);
-  // Count how many pizzas are in each topping
-  const toppingsWithCounts = countPizzasInToppings(pizzas.nodes);
-  // Loop over the list of toppings and display the topping and the count of pizzas in that topping
-  // Link it up.. ...  . . .
+
+  const toppingsWithCounts = pizzasByToppingCount(pizzas.nodes);
   return (
     <ToppingsStyles>
       <Link to="/pizzas">

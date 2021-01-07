@@ -33,7 +33,7 @@ async function turnPizzasIntoPages({ graphql, actions }) {
 
 async function turnToppingsIntoPages({ graphql, actions }) {
   // 1. Get a template for this page
-  const toppingTemplate = path.resolve('./src/pages/Pizzas.js');
+  const toppingTemplate = path.resolve('./src/pages/pizzas.js');
   // 2. Query all pizzas
   const { data } = await graphql(`
     query {
@@ -62,24 +62,43 @@ async function turnSlicemastersIntoPages({ graphql, actions }) {
     query {
       slicemasters: allSanityPerson {
         totalCount
+        nodes {
+          name
+          slug {
+            current
+          }
+        }
       }
     }
   `);
-  const { totalCount } = data.slicemasters;
+
+  const slicemasters = data.slicemasters.nodes;
+
+  slicemasters.forEach((slicemaster) => {
+    actions.createPage({
+      path: `slicemaster/${slicemaster.slug.current}`,
+      component: path.resolve('./src/templates/SliceMaster.js'),
+      context: {
+        name: slicemaster.name,
+        slug: slicemaster.slug.current,
+      },
+    });
+  });
+
   const pageSize = parseInt(process.env.GATSBY_PAGE_SIZE);
-  const pageCount = Math.ceil(totalCount / pageSize);
-  console.log(
-    `there are ${totalCount} and we have ${pageSize} pages with ${pageCount} on each page`
+  const pageCount = Math.ceil(data.slicemasters.totalCount / pageSize);
+  console.info(
+    `There are ${data.slicemasters.totalCount} total people. And we have ${pageCount} pages with ${pageSize} per page`
   );
 
   Array.from({ length: pageCount }).forEach((_, i) => {
-    const pageNumber = i + 1;
     actions.createPage({
-      path: `/slicemasters/${pageNumber}`,
+      path: `/slicemasters/${i + 1}`,
       component: path.resolve('./src/pages/slicemasters.js'),
+      // This data is pass to the template when we create it
       context: {
         skip: i * pageSize,
-        currentPage: pageNumber,
+        currentPage: i + 1,
         pageSize,
       },
     });
